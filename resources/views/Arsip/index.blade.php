@@ -51,7 +51,13 @@
                                 <td>{{ $item->nomor_surat }}</td>
                                 <td>{{ $item->kategoriSurat->nama_kategori }}</td>
                                 <td>{{ $item->judul }}</td>
-                                <td>{{ $item->created_at }}</td>
+                                <td>
+                                    @if ($item->created_at == $item->updated_at)
+                                        {{ $item->created_at }}
+                                    @else
+                                        {{ $item->updated_at }}
+                                    @endif
+                                </td>
                                 <td>
                                     <a href="{{ route('arsip_surat.edit', $item->id) }}"
                                         class="btn btn-primary btn-sm">Edit</a>

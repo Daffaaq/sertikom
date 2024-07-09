@@ -19,10 +19,10 @@ class SuratController extends Controller
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('nomor_surat', 'like', "%{$search}%")
-            ->orWhere('judul', 'like', "%{$search}%")
-            ->orWhereHas('kategoriSurat', function ($q) use ($search) {
-                $q->where('nama_kategori', 'like', "%{$search}%");
-            });
+                ->orWhere('judul', 'like', "%{$search}%")
+                ->orWhereHas('kategoriSurat', function ($q) use ($search) {
+                    $q->where('nama_kategori', 'like', "%{$search}%");
+                });
         }
 
         $surats = $query->paginate(1); // Change the number as needed
@@ -75,9 +75,9 @@ class SuratController extends Controller
         try {
             $surat = Surat::findOrFail($id);
             $kategoriSurats = KategoriSurat::all();
-            return view('surats.edit', compact('surat', 'kategoriSurats'));
+            return view('Arsip.edit', compact('surat', 'kategoriSurats'));
         } catch (Exception $e) {
-            return redirect()->route('surats.index')
+            return redirect()->route('arsip_surat.index')
                 ->with('error', 'Surat not found.');
         }
     }
@@ -86,14 +86,28 @@ class SuratController extends Controller
     {
         try {
             $surat = Surat::findOrFail($id);
-            $surat->update($request->validated());
-            return redirect()->route('surats.index')
+
+            // Check if a new file has been uploaded
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $filePath = $file->store('uploads', 'public'); // Store file in the 'public/uploads' directory
+                $request->merge(['file' => $filePath]); // Merge the new file path into the request data
+            } else {
+                // Keep the existing file path
+                $request->merge(['file' => $surat->file]);
+            }
+
+            $surat->update($request->all());
+
+            return redirect()->route('arsip_surat.index')
                 ->with('success', 'Surat updated successfully.');
         } catch (Exception $e) {
             return redirect()->back()
                 ->with('error', 'An error occurred while updating the Surat.');
         }
     }
+
+
 
     public function destroy($id)
     {

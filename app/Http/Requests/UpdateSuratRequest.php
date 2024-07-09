@@ -24,8 +24,7 @@ class UpdateSuratRequest extends FormRequest
         return [
             'nomor_surat' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
-            'file' => 'required|string',
-            'waktu_arsip' => 'required|date',
+            'file' => 'nullable|file|mimes:pdf|max:2048', // Validate as a file with specific mime types and size
             'kategori_surat_id' => 'required|exists:kategori_surats,id',
         ];
     }
