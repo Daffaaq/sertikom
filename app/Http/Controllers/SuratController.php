@@ -12,11 +12,24 @@ use Exception;
 
 class SuratController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $surats = Surat::with('kategoriSurat')->get();
+        $query = Surat::with('kategoriSurat');
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nomor_surat', 'like', "%{$search}%")
+            ->orWhere('judul', 'like', "%{$search}%")
+            ->orWhereHas('kategoriSurat', function ($q) use ($search) {
+                $q->where('nama_kategori', 'like', "%{$search}%");
+            });
+        }
+
+        $surats = $query->paginate(1); // Change the number as needed
+
         return view('Arsip.index', compact('surats'));
     }
+
 
     public function create()
     {
@@ -87,9 +100,15 @@ class SuratController extends Controller
         try {
             $surat = Surat::findOrFail($id);
             $surat->delete();
+            if (request()->expectsJson()) {
+                return response()->json(['success' => true, 'message' => 'Kategori Surat deleted successfully.']);
+            }
             return redirect()->route('surats.index')
                 ->with('success', 'Surat deleted successfully.');
         } catch (Exception $e) {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'An error occurred while deleting the Kategori Surat.'], 500);
+            }
             return redirect()->route('surats.index')
                 ->with('error', 'An error occurred while deleting the Surat.');
         }

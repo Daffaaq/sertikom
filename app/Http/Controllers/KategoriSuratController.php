@@ -20,7 +20,7 @@ class KategoriSuratController extends Controller
                 ->orWhere('keterangan', 'like', "%{$search}%");
         }
 
-        $kategoriSurats = $query->get();
+        $kategoriSurats = $query->paginate(1); // Change the number as needed
 
         return view('kategori-surat.index', compact('kategoriSurats'));
     }

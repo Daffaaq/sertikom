@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arsip</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 
 <body>
@@ -57,11 +59,15 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <!-- Tambahkan baris lainnya sesuai kebutuhan -->
                     </tbody>
-                </table><br>
-                <a href="{{ route('kategori_surats.create') }}" class="btn btn-success btn-block"
-                    style="width: 400px;">Tambahkan kategori baru</a>
+                </table>
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ route('kategori_surats.create') }}" class="btn btn-success btn-block"
+                        style="width: 250px;">[
+                        <i class="fas fa-plus"></i> ] Tambahkan kategori baru
+                    </a>
+                    {{ $kategoriSurats->links('pagination::bootstrap-4') }}
+                </div>
             </div>
         </div>
     </div>
