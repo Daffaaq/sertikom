@@ -4,152 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsip Surat</title>
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            font-family: Arial, sans-serif;
-        }
-
-        .sidebar {
-            width: 200px;
-            background-color: #f4f4f4;
-            padding: 20px;
-            border-right: 1px solid #ccc;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar h2 {
-            text-align: center;
-        }
-
-        .sidebar ul {
-            list-style-type: none;
-            padding: 0;
-            flex: 1;
-        }
-
-        .sidebar ul li {
-            margin: 15px 0;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #000;
-        }
-
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            /* Center horizontally */
-            padding: 60px;
-            overflow-y: auto;
-        }
-
-        .search-container {
-            margin-bottom: 20px;
-        }
-
-        .table-container {
-            width: 100%;
-            max-width: 800px;
-            /* Set a maximum width for the table */
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #ccc;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        .actions button {
-            margin-right: 5px;
-        }
-
-        .archive-button {
-            margin-top: 20px;
-        }
-    </style>
+    <title>Arsip</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>Menu</h2>
-        <ul>
-            <li><a href="#">Arsip</a></li>
-            <li><a href="#">Kategori Surat</a></li>
-            <li><a href="#">About</a></li>
-        </ul>
-    </div>
-    <div class="main-content">
-        <h1>Arsip Surat</h1>
-        <p>Berikut ini adalah surat-surat yang telah terbit dan diarsipkan. Klik "Lihat" pada kolom aksi untuk
-            menampilkan surat.</p>
+    <!-- Sidebar -->
+    @include('layouts.sidebar')
 
-        <div class="search-container">
-            <input type="text" placeholder="Cari surat..." id="search">
-            <button>Cari!</button>
+
+
+    <!-- Page Content -->
+    <div style="width: 75%;">
+        <div class="bg-teal p-3">
+            <h1>Arsip Surat</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
+                into electronic typesetting, remaining essentially unchanged.</p>
+            <div class="container mt-5">
+                <div class="d-flex justify-content-center">
+                    <div class="input-group mb-3" style="max-width: 700px;">
+                        <span class="input-group-text">Cari Kategori</span>
+                        <input type="text" class="form-control rounded-start" placeholder="Search..."
+                            aria-label="Search" aria-describedby="search-button">
+                        <button class="btn btn-primary rounded-end" type="button" id="search-button">Cari</button>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Nomor Surat</th>
+                            <th>Kategori</th>
+                            <th>Judul</th>
+                            <th>Waktu Pengarsipan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($surats as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->nomor_surat }}</td>
+                                <td>{{ $item->kategoriSurat->nama_kategori }}</td>
+                                <td>{{ $item->judul }}</td>
+                                <td>{{ $item->created_at }}</td>
+                                <td>
+                                    <a href="{{ route('arsip_surat.edit', $item->id) }}"
+                                        class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="{{ route('arsip_surat.show', $item->id) }}"
+                                        class="btn btn-info btn-sm">Detail</a>
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="{{ $item->id }}">Hapus</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                        <!-- Tambahkan baris lainnya sesuai kebutuhan -->
+                    </tbody>
+                </table><br>
+                <a href="{{ route('arsip_surat.create') }}" class="btn btn-success btn-block"
+                    style="width: 400px;">Arsipkan Surat</a>
+            </div>
         </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nomor Surat</th>
-                        <th>Kategori</th>
-                        <th>Judul</th>
-                        <th>Waktu Pengarsipan</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2022/PD3/TU/001</td>
-                        <td>Pengumuman</td>
-                        <td>Nota Dinas WFH</td>
-                        <td>2023-06-21 17:23</td>
-                        <td class="actions">
-                            <button style="background-color: red; color: white;">Hapus</button>
-                            <button style="background-color: orange; color: white;">Unduh</button>
-                            <button style="background-color: blue; color: white;">Lihat >></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2022/PD2/TU/022</td>
-                        <td>Undangan</td>
-                        <td>Undangan Halal Bi Halal</td>
-                        <td>2023-04-21 18:23</td>
-                        <td class="actions">
-                            <button style="background-color: red; color: white;">Hapus</button>
-                            <button style="background-color: orange; color: white;">Unduh</button>
-                            <button style="background-color: blue; color: white;">Lihat >></button>
-                        </td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-        </div>
-
-        <button class="archive-button">Arsipkan Surat..</button>
     </div>
+    </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

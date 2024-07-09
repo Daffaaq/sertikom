@@ -10,15 +10,25 @@ use App\Models\KategoriSurat;
 
 class KategoriSuratController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategoriSurats = KategoriSurat::all();
-        return view('kategori_surats.index', compact('kategoriSurats'));
+        $query = KategoriSurat::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama_kategori', 'like', "%{$search}%")
+                ->orWhere('keterangan', 'like', "%{$search}%");
+        }
+
+        $kategoriSurats = $query->get();
+
+        return view('kategori-surat.index', compact('kategoriSurats'));
     }
+
 
     public function create()
     {
-        return view('kategori_surats.create');
+        return view('kategori-surat.create');
     }
 
     public function store(StoreKategoriSuratRequest $request)
@@ -48,7 +58,7 @@ class KategoriSuratController extends Controller
     {
         try {
             $kategoriSurat = KategoriSurat::findOrFail($id);
-            return view('kategori_surats.edit', compact('kategoriSurat'));
+            return view('kategori-surat.edit', compact('kategoriSurat'));
         } catch (Exception $e) {
             return redirect()->route('kategori_surats.index')
                 ->with('error', 'Kategori Surat not found.');
@@ -74,9 +84,17 @@ class KategoriSuratController extends Controller
             $kategoriSurat = KategoriSurat::findOrFail($id);
             $kategoriSurat->delete();
 
+            if (request()->expectsJson()) {
+                return response()->json(['success' => true, 'message' => 'Kategori Surat deleted successfully.']);
+            }
+
             return redirect()->route('kategori_surats.index')
                 ->with('success', 'Kategori Surat deleted successfully.');
         } catch (Exception $e) {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'An error occurred while deleting the Kategori Surat.'], 500);
+            }
+
             return redirect()->route('kategori_surats.index')
                 ->with('error', 'An error occurred while deleting the Kategori Surat.');
         }

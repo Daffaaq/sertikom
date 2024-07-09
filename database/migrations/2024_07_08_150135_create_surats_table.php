@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('nomor_surat');
             $table->string('judul');
             $table->string('file');
-            $table->datetimes('waktu_arsip');
             $table->foreignId('kategori_surat_id')->constrained('kategori_surats')->onDelete('cascade');
             $table->timestamps();
         });

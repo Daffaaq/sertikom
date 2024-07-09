@@ -15,9 +15,9 @@ class Surat extends Model
         'nomor_surat',
         'judul',
         'file',
-        'waktu_arsip',
         'kategori_surat_id',
     ];
+
 
     public function kategoriSurat()
     {

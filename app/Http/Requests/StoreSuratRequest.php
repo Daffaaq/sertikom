@@ -24,8 +24,7 @@ class StoreSuratRequest extends FormRequest
         return [
             'nomor_surat' => 'required|string|max:255',
             'judul' => 'required|string|max:255',
-            'file' => 'required|string',
-            'waktu_arsip' => 'required|date',
+            'file' => 'required|file|mimes:pdf|max:2048',
             'kategori_surat_id' => 'required|exists:kategori_surats,id',
         ];
     }
