@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('arsip.arsip');
+    return view('About.about');
 });
 
 Route::resource('kategori_surats', KategoriSuratController::class);

@@ -12,7 +12,7 @@
 
 <body>
     <!-- Sidebar -->
-    @include('sidebar')
+    @include('layouts.sidebar')
 
 
 
@@ -29,9 +29,9 @@
                         </div>
                         <div class="col-md-8">
                             <h4>Aplikasi ini dibuat oleh:</h4>
-                            <p><strong>Nama:</strong> Nafarul Hamkah</p>
+                            <p><strong>Nama:</strong> Daffa Aqila Rahmatullah</p>
                             <p><strong>Prodi:</strong> DIV Teknik Informatika</p>
-                            <p><strong>NIM:</strong> 2041720101 </p>
+                            <p><strong>NIM:</strong> 2041720098 </p>
                             <p><strong>Tanggal:</strong>10 Juli 2024 </p>
                         </div>
                     </div>
