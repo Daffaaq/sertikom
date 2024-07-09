@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateSuratRequest;
 use Illuminate\Http\Request;
 use App\Models\Surat;
 use App\Models\KategoriSurat;
+use Exception;
 
 class SuratController extends Controller
 {
@@ -24,40 +25,62 @@ class SuratController extends Controller
 
     public function store(StoreSuratRequest $request)
     {
-        Surat::create($request->validated());
-
-        return redirect()->route('surats.index')
-            ->with('success', 'Surat created successfully.');
+        try {
+            Surat::create($request->validated());
+            return redirect()->route('surats.index')
+                ->with('success', 'Surat created successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'An error occurred while creating the Surat.');
+        }
     }
 
     public function show($id)
     {
-        $surat = Surat::findOrFail($id);
-        return view('surats.show', compact('surat'));
+        try {
+            $surat = Surat::findOrFail($id);
+            return view('surats.show', compact('surat'));
+        } catch (Exception $e) {
+            return redirect()->route('surats.index')
+                ->with('error', 'Surat not found.');
+        }
     }
 
     public function edit($id)
     {
-        $surat = Surat::findOrFail($id);
-        $kategoriSurats = KategoriSurat::all();
-        return view('surats.edit', compact('surat', 'kategoriSurats'));
+        try {
+            $surat = Surat::findOrFail($id);
+            $kategoriSurats = KategoriSurat::all();
+            return view('surats.edit', compact('surat', 'kategoriSurats'));
+        } catch (Exception $e) {
+            return redirect()->route('surats.index')
+                ->with('error', 'Surat not found.');
+        }
     }
 
     public function update(UpdateSuratRequest $request, $id)
     {
-        $surat = Surat::findOrFail($id);
-        $surat->update($request->validated());
-
-        return redirect()->route('surats.index')
-            ->with('success', 'Surat updated successfully.');
+        try {
+            $surat = Surat::findOrFail($id);
+            $surat->update($request->validated());
+            return redirect()->route('surats.index')
+                ->with('success', 'Surat updated successfully.');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'An error occurred while updating the Surat.');
+        }
     }
 
     public function destroy($id)
     {
-        $surat = Surat::findOrFail($id);
-        $surat->delete();
-
-        return redirect()->route('surats.index')
-            ->with('success', 'Surat deleted successfully.');
+        try {
+            $surat = Surat::findOrFail($id);
+            $surat->delete();
+            return redirect()->route('surats.index')
+                ->with('success', 'Surat deleted successfully.');
+        } catch (Exception $e) {
+            return redirect()->route('surats.index')
+                ->with('error', 'An error occurred while deleting the Surat.');
+        }
     }
 }
