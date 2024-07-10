@@ -11,6 +11,7 @@ class KategoriSurat extends Model
     protected $table = 'kategori_surats';
 
     protected $fillable = [
+        'id',
         'nama_kategori',
         'keterangan',
     ];

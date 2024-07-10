@@ -1,63 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsip</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+@section('container')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Create New User</div>
 
-<body>
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
+                        <form action="{{ route('arsip_surat.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label for="nomor_surat">Nama Kategori:</label>
+                                <input type="text" name="nomor_surat" id="nomor_surat" class="form-control" required>
+                            </div>
+                            <!-- Password -->
+                            <!-- Role -->
+                            <div class="form-group">
+                                <label for="Kategori">Kategori:</label>
+                                <select class="form-control" id="kategori" name="kategori_surat_id" required>
+                                    <option value="" disabled selected>Pilih Kategori</option>
+                                    @foreach ($kategoriSurats as $kategori)
+                                        <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="judul">judul:</label>
+                                <input type="text" name="judul" id="judul" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">file:</label>
+                                <input type="file" name="file" id="file" class="form-control" required>
+                            </div>
 
-    <!-- Page Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Arsip Surat >> Unggah</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                <p>Lorem Ipsum is simply dummy</p>
-                <form action="{{ route('arsip_surat.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group">
-                        <label for="nomor_surat">Nomor Surat</label>
-                        <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" required>
+                            <!-- Submit Button -->
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <a href="{{ route('kategori_surats.index') }}" class="btn btn-secondary">Back</a>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="kategori">Kategori</label>
-                        <select class="form-control" id="kategori" name="kategori_surat_id" required>
-                            <option value="" disabled selected>Pilih Kategori</option>
-                            @foreach ($kategoriSurats as $kategori)
-                                <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="judul">Judul</label>
-                        <input type="text" class="form-control" id="judul" name="judul" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="file">File:</label>
-                        <input type="file" class="form-control" id="file" name="file" required>
-                        <small>masukkan file pdf</small>
-                    </div>
-                    <br>
-                    <a href="{{ route('arsip_surat.index') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
-    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
-```
+@endsection

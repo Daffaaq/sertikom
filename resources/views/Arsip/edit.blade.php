@@ -1,62 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
+@section('container')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Edit User</div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{ route('arsip_surat.update', $surat->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label for="nomor_surat">Nama Kategori: <span class="text-danger">*</span></label>
+                                <input type="text" name="nomor_surat" id="nomor_surat" class="form-control"
+                                    value="{{ $surat->nomor_surat }}" required>
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="Kategori">Kategori:</label>
+                                <select class="form-control" id="kategori" name="kategori_surat_id" required>
+                                    <option value="" disabled>Pilih Kategori</option>
+                                    @foreach ($kategoriSurats as $kategori)
+                                        <option value="{{ $kategori->id }}"
+                                            {{ $surat->kategori_surat_id == $kategori->id ? 'selected' : '' }}>
+                                            {{ $kategori->nama_kategori }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="judul">judul:</label>
+                                <input type="text" name="judul" id="judul" class="form-control"
+                                    value="{{ $surat->judul }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">file:</label>
+                                <input type="file" name="file" id="file" class="form-control">
+                                <small>Masukkan file PDF jika ingin mengubah file</small>
+                            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsip</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-
-<body>
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
-
-    <!-- Page Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Arsip Surat >> Edit</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                <p>Lorem Ipsum is simply dummy</p>
-                <form action="{{ route('arsip_surat.update', $surat->id) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="nomor_surat">Nomor Surat</label>
-                        <input type="text" class="form-control" id="nomor_surat" name="nomor_surat" value="{{ $surat->nomor_surat }}" required>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <a href="{{ route('arsip_surat.index') }}" class="btn btn-secondary">Back</a>
+                                    <button type="submit" class="btn btn-primary">Update Arsip</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="kategori">Kategori</label>
-                        <select class="form-control" id="kategori" name="kategori_surat_id" required>
-                            <option value="" disabled>Pilih Kategori</option>
-                            @foreach ($kategoriSurats as $kategori)
-                                <option value="{{ $kategori->id }}" {{ $surat->kategori_surat_id == $kategori->id ? 'selected' : '' }}>
-                                    {{ $kategori->nama_kategori }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="judul">Judul</label>
-                        <input type="text" class="form-control" id="judul" name="judul" value="{{ $surat->judul }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="file">File:</label>
-                        <input type="file" class="form-control" id="file" name="file">
-                        <small>Masukkan file PDF jika ingin mengubah file</small>
-                    </div>
-                    <br>
-                    <a href="{{ route('arsip_surat.index') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+@endsection

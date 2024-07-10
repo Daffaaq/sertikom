@@ -1,48 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsip</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+@section('container')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Create New User</div>
 
-<body>
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-
-    <!-- Page Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Kategori Surat >> Unggah</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                <form action="{{ route('kategori_surats.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group">
-                        <label for="nama_kategori">Nama Kategori</label>
-                        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
+                        <form action="{{ route('kategori_surats.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label for="id">id</label>
+                                <input type="text" name="id" id="id" class="form-control"
+                                    value="{{ $nextId }}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="nama_kategori">Nama Kategori:</label>
+                                <input type="text" name="nama_kategori" id="nama_kategori" class="form-control" required>
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="keterangan">Keterangan:</label>
+                                <input type="keterangan" name="keterangan" id="keterangan" class="form-control" required>
+                            </div>
+                            <!-- Submit Button -->
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <a href="{{ route('kategori_surats.index') }}" class="btn btn-secondary">Back</a>
+                                    <button type="submit" class="btn btn-primary">Create User</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="keterangan">Judul</label>
-                        <textarea type="text" class="form-control" id="keterangan" name="keterangan" required></textarea>
-                    </div>
-                    <br>
-                    <a href="{{ route('kategori_surats.index') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                </form>
-
+                </div>
             </div>
         </div>
     </div>
-    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
-```
+@endsection

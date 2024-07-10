@@ -20,7 +20,7 @@ class KategoriSuratController extends Controller
                 ->orWhere('keterangan', 'like', "%{$search}%");
         }
 
-        $kategoriSurats = $query->paginate(1); // Change the number as needed
+        $kategoriSurats = $query->paginate(5); // Change the number as needed
 
         return view('kategori-surat.index', compact('kategoriSurats'));
     }
@@ -28,7 +28,8 @@ class KategoriSuratController extends Controller
 
     public function create()
     {
-        return view('kategori-surat.create');
+        $nextId = KategoriSurat::max('id') + 1;
+        return view('kategori-surat.create',compact('nextId'));
     }
 
     public function store(StoreKategoriSuratRequest $request)

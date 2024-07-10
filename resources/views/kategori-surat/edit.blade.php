@@ -1,52 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.index')
+@section('container')
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Edit User</div>
+                    <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form action="{{ route('kategori_surats.update', ['kategori_surat' => $kategoriSurat->id]) }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label for="nama_kategori">Nama Kategori: <span class="text-danger">*</span></label>
+                                <input type="text" name="nama_kategori" id="nama_kategori" class="form-control"
+                                    value="{{ $kategoriSurat->nama_kategori }}" required>
+                            </div>
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label for="keterangan">keterangan: <span class="text-danger">*</span></label>
+                                <input type="keterangan" name="keterangan" id="keterangan" class="form-control"
+                                    value="{{ $kategoriSurat->keterangan }}" required>
+                            </div>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arsip</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
 
-<body>
-    <!-- Sidebar -->
-    @include('layouts.sidebar')
-
-
-    <!-- Page Content -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Kategori Surat >> Unggah</h2>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                <form action="{{ route('kategori_surats.update', ['kategori_surat' => $kategoriSurat->id]) }}"
-                    method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="nama_kategori">Nama Kategori</label>
-                        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
-                            value="{{ $kategoriSurat->nama_kategori }}" required>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <a href="{{ route('kategori_surats.index') }}" class="btn btn-secondary">Back</a>
+                                    <button type="submit" class="btn btn-primary">Update User</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="keterangan">Judul</label>
-                        <textarea type="text" class="form-control" id="keterangan" name="keterangan" required>{{ $kategoriSurat->keterangan }}</textarea>
-                    </div>
-                    <br>
-                    <a href="{{ route('kategori_surats.index') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                </form>
-
-
+                </div>
             </div>
         </div>
     </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
-```
+@endsection

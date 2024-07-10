@@ -25,7 +25,7 @@ class SuratController extends Controller
                 });
         }
 
-        $surats = $query->paginate(1); // Change the number as needed
+        $surats = $query->paginate(5); // Change the number as needed
 
         return view('Arsip.index', compact('surats'));
     }
