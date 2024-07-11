@@ -91,13 +91,17 @@ class SuratController extends Controller
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $filePath = $file->store('uploads', 'public'); // Store file in the 'public/uploads' directory
-                $request->merge(['file' => $filePath]); // Merge the new file path into the request data
             } else {
                 // Keep the existing file path
                 $request->merge(['file' => $surat->file]);
             }
 
-            $surat->update($request->all());
+            $surat->update([
+                'nomor_surat' => $request->nomor_surat,
+                'judul' => $request->judul,
+                'file' => $filePath,
+                'kategori_surat_id' => $request->kategori_surat_id,
+            ]);
 
             return redirect()->route('arsip_surat.index')
                 ->with('success', 'Surat updated successfully.');
@@ -106,6 +110,7 @@ class SuratController extends Controller
                 ->with('error', 'An error occurred while updating the Surat.');
         }
     }
+
 
 
 
